@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Heroes } from '../mock/mock-heroes';
 import { Hero } from '../models/hero';
 import { HeroService } from '../services/hero.service';
 
 @Component({
-  selector: 'app-heroes',
+  selector: 'heroes',
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.css'],
   providers: []
@@ -17,7 +16,7 @@ export class HeroesComponent implements OnInit {
 
   selectedHero: Hero;
   constructor(private router: Router, private heroService: HeroService) { }
-  
+
   ngOnInit(): void {
     this.getHeroes();
   }
@@ -28,6 +27,25 @@ export class HeroesComponent implements OnInit {
 
   }
 
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.heroService.create(name)
+      .then(hero => {
+        this.heroes.push(hero);
+        this.selectedHero = null;
+      });
+  }
+
+  delete(hero: Hero): void {
+    this.heroService
+        .delete(hero.id)
+        .then(() => {
+          this.heroes = this.heroes.filter(h => h !== hero);
+          if (this.selectedHero === hero) { this.selectedHero = null; }
+        });
+  }
+  
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
   }
