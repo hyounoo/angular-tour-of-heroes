@@ -71,7 +71,7 @@ THE SOFTWARE.
 MIT
 MIT
 
-@angular/http@4.4.6
+@angular/router@4.4.6
 MIT
 MIT
 
